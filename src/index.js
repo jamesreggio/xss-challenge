@@ -165,19 +165,26 @@ app.post('/stolen_data', function(req, res) {
       return str;
     }
 
-    res.send(Object.keys(challenges).reduce(function(str, key) {
+    var outcomes = '';
+    var scores = Object.keys(challenges).reduce(function(str, key) {
       var challenge = challenges[key];
       var value = challenge[0];
       var outcome = challenge[1]();
 
-      str += pad(key, 25);
       str += pad(outcome === true ? value : 0, 2);
       str += ' / ';
-      str += pad(value, 4);
-      str += typeof outcome === 'string' ? outcome : '';
+      str += pad(value, 3);
+      str += pad(key, 25);
       str += '\n';
+      if (typeof outcome === 'string') {
+        outcomes += outcome;
+        outcomes += '\n';
+      }
       return str;
-    }, ''));
+    }, '');
+
+    res.set('Content-Type', 'text/plain');
+    res.send(scores + '\n' + outcomes);
   }
 
   try {
