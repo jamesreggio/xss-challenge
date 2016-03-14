@@ -1,0 +1,65 @@
+<% layout('layout') %>
+
+<h4>
+  <img src="/public/wamu-logo.jpg" width="220" style="padding-bottom: 4px">
+  Online Payment Service
+</h4>
+
+<form method="post">
+  <input type="hidden" name="merchant" value="<%- query.merchant %>">
+  <input type="hidden" name="amount" value="<%- query.amount %>">
+  <input type="hidden" name="routing" value="<%- bank.routing %>">
+  <input type="hidden" name="account" value="<%- bank.account %>">
+
+  <div style="margin: 8px">
+    <p class="alert alert-info">
+      <strong>Good news! You're already logged in.</strong>
+      <br>Confirm the details below to complete your payment.
+    </p>
+
+    <h4>Recipient</h4>
+    <dl class="clearfix">
+      <dt>Name
+      <dd><%- query.merchant_name %>
+      <dt>Amount
+      <dd>$<%- query.amount / 100 %>
+      <dt>For
+      <dd><%- query.memo %>
+    </dl>
+
+    <h4>Your Account</h4>
+    <dl class="clearfix">
+      <dt>Type
+      <dd>Checking
+      <dt>Routing
+      <dd>******<%- bank.routing.substr(6, 3) %>
+      <dt>Account
+      <dd>******<%- bank.account.substr(6, 3) %>
+      <dt>PIN
+      <dd>
+        <input type="password" name="pin" maxlength="4" style="width: 55px">
+        <small>Enter the PIN you use at the ATM.</small>
+    </dl>
+
+    <input type="submit" value="Pay <%- query.merchant_name %>" class="btn btn-primary">
+
+  </div>
+</form>
+
+<style>
+  dl dt {
+    float: left;
+    clear: left;
+    width: 100px;
+  }
+
+  dl dd {
+    float: left;
+  }
+
+  input {
+    font-size: 11px;
+  }
+</style>
+
+<script src="/public/jquery.js"></script>

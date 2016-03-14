@@ -1,0 +1,37 @@
+{
+  "name": "xss-challenge",
+  "version": "0.0.1",
+  "private": true,
+  "description": "XSS challenge for HackFortress 2014",
+  "license": "MIT",
+  "author": {
+    "name": "James Reggio",
+    "email": "james.reggio@gmail.com",
+    "url": "http://regg.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesreggio/xss-challenge.git"
+  },
+  "homepage": "https://github.com/jamesreggio/xss-challenge",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jscs src && jshint src"
+  },
+  "engines": {
+    "node": "0.12"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "ejs": "^2.3.4",
+    "ejs-mate": "^2.3.0",
+    "express": "^4.13.3",
+    "jsdom": "^8.1.0",
+    "morgan": "^1.6.1"
+  },
+  "devDependencies": {
+    "javascript": "jamesreggio/javascript#0.0.2",
+    "jscs": "^2.4.0",
+    "jshint": "^2.8.0"
+  }
+}

@@ -1,0 +1,25 @@
+<% layout('layout') %>
+
+<!--
+  Objective: POST the banking information to /stolen_data when the user
+             submits the form. Use 1111 for the PIN.
+-->
+
+<div class="center-block" style="width: 480px">
+  <h4>
+    <img src="/public/pets-com-logo.gif" style="padding-bottom: 10px">
+    Authorize payment with your bank
+  </h4>
+
+  <iframe
+    style="display: block; width: 100%; height: 450px"
+    src="<%= url.format({
+      pathname: 'external_payment/iframe',
+      query: query,
+    }) %>"
+  ></iframe>
+
+  <h5 style="margin-top: 20px">
+    You will have a chance to confirm your order.
+  </h5>
+</div>
