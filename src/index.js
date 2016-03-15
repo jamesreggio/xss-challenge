@@ -112,7 +112,12 @@ app.post('/stolen_data', function(req, res) {
       }
 
       // The more typical solution is to inject an inline event attribute.
-      if ($('[onclick], [onsubmit]').length) {
+      if ($('[onclick], [onsubmit], [onerror], [onload]').length) {
+        return true;
+      }
+
+      // Another approach is to redirect the form submission.
+      if ($('[formaction]').length) {
         return true;
       }
 
@@ -126,11 +131,18 @@ app.post('/stolen_data', function(req, res) {
       }
 
       var text = $('form').text();
-      var script = ['script', 'onclick', 'onsubmit', '$.'];
+      var button = $('[type="submit"]').val();
+
+      var script = ['script', 'onclick', 'onsubmit', 'onerror', 'onload', '$.'];
       for (var i = 0, term = script[i]; i < script.length; term = script[++i]) {
-        if (text.indexOf(term) !== -1) {
+        if (text.indexOf(term) !== -1 || button.indexOf(term) !== -1) {
           return 'The presence of "' + term + '" seems a bit phishy';
         }
+      }
+
+      var html = /<\w|\//;
+      if (html.test(text) || html.test(button)) {
+        return 'The presence of partial HTML seems a bit phishy';
       }
 
       return true;
@@ -142,13 +154,13 @@ app.post('/stolen_data', function(req, res) {
         return false;
       }
 
-      var name = $('dl:first-of-type dd:first-of-type').text();
+      var name = $('dl:first-of-type dd:first-of-type').text().trim();
       if (['Pets.com', '"Pets.com"'].indexOf(name) === -1) {
         return 'The recipient name seems a bit off';
       }
 
-      var button = $('[type="submit"]').val();
-      if (['Pay ', 'Pay Pets.com', 'Pay "Pets.com"'].indexOf(button) === -1) {
+      var button = $('[type="submit"]').val().trim();
+      if (['Pay', 'Pay Pets.com', 'Pay "Pets.com"'].indexOf(button) === -1) {
         return 'The submit button seems a bit off';
       }
 
