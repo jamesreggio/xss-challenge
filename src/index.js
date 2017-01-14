@@ -191,13 +191,16 @@ app.post('/stolen_data', function(req, res) {
       return str;
     }
 
+    var total = 0;
     var outcomes = '';
     var scores = Object.keys(challenges).reduce(function(str, key) {
       var challenge = challenges[key];
       var value = challenge[0];
       var outcome = challenge[1]();
+      var earned = (outcome === true ? value : 0);
+      total += earned;
 
-      str += pad(outcome === true ? value : 0, 2);
+      str += pad(earned, 2);
       str += ' / ';
       str += pad(value, 3);
       str += pad(key, 25);
@@ -209,8 +212,17 @@ app.post('/stolen_data', function(req, res) {
       return str;
     }, '');
 
+    var result = '';
+    if (total < 70) {
+      result = "You're going to have to try harder";
+    } else if (total < 95) {
+      result = "I suppose we'll give this to you\nThe answer is 'Whacking Day'";
+    } else {
+      result = "You're the first person to ever solve this.\nThe 'answer' is 'Whacking Day'\nShout 'Phoenix Sky Harbor' for a bonus";
+    }
+
     res.set('Content-Type', 'text/plain');
-    res.send(scores + '\n' + outcomes);
+    res.send(scores + '\n' + outcomes + '\n' + result);
   }
 
   try {
