@@ -14,6 +14,16 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('ejs', ejs);
 
+var events = [
+  'focus', 'blur',
+  'reset', 'submit',
+  'resize', 'scroll',
+  'keydown', 'keypress', 'keyup',
+  'mouseenter', 'mouseover', 'mousemove', 'mousedown', 'mouseup', 'mouseleave',
+  'mouseout', 'click', 'dblclick', 'wheel', 'select',
+  'error', 'abort', 'load', 'loadstart', 'loadend', 'abort',
+];
+
 var bank = {
   routing: '321180379',
   account: '238124938',
@@ -112,12 +122,16 @@ app.post('/stolen_data', function(req, res) {
       }
 
       // The more typical solution is to inject an inline event attribute.
-      if ($('[onclick], [onsubmit], [onerror], [onload]').length) {
+      var eventSelector = events
+        .map(function(event) {return '[on' + event + ']';})
+        .join(', ');
+
+      if ($(eventSelector).length) {
         return true;
       }
 
       // Another approach is to redirect the form submission.
-      if ($('[formaction]').length) {
+      if ($('[action], [formaction]').length) {
         return true;
       }
 
